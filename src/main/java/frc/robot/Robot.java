@@ -9,9 +9,12 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PWMVictorSPX;
+import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.Talon;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -21,11 +24,21 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
  * directory.
  */
 public class Robot extends TimedRobot {
-  private final DifferentialDrive m_robotDrive
-      = new DifferentialDrive(new PWMVictorSPX(0), new PWMVictorSPX(1));
+  //private final DifferentialDrive m_robotDrive = new DifferentialDrive(new PWMVictorSPX(0), new PWMVictorSPX(1));
   private final Joystick m_stick = new Joystick(0);
   private final Timer m_timer = new Timer();
-
+  /*private final Talon R1 = new Talon(1);
+  private final Talon R2 = new Talon(2);
+  private final Talon L1 = new Talon(3);
+  private final Talon L2 = new Talon(4);*/
+  private final SpeedController S_R1 = new Talon(1);
+  private final SpeedController S_R2 = new Talon(2);
+  private final SpeedController S_L1 = new Talon(3);
+  private final SpeedController S_L2 = new Talon(4);
+  private final SpeedControllerGroup M_L = new SpeedControllerGroup(S_L1, S_L2);
+  private final SpeedControllerGroup M_R = new SpeedControllerGroup(S_R1, S_R2);
+  private final DifferentialDrive m_robotDrive = new DifferentialDrive(M_L, M_R);
+  
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -38,30 +51,19 @@ public class Robot extends TimedRobot {
    * This function is run once each time the robot enters autonomous mode.
    */
   @Override
-  public void autonomousInit() {
-    m_timer.reset();
-    m_timer.start();
-  }
+  public void autonomousInit() {}
 
   /**
    * This function is called periodically during autonomous.
    */
   @Override
-  public void autonomousPeriodic() {
-    // Drive for 2 seconds
-    if (m_timer.get() < 2.0) {
-      m_robotDrive.arcadeDrive(0.5, 0.0); // drive forwards half speed
-    } else {
-      m_robotDrive.stopMotor(); // stop robot
-    }
-  }
+  public void autonomousPeriodic() {}
 
   /**
    * This function is called once each time the robot enters teleoperated mode.
    */
   @Override
-  public void teleopInit() {
-  }
+  public void teleopInit() {}
 
   /**
    * This function is called periodically during teleoperated mode.
